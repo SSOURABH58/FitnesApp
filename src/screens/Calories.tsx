@@ -1,6 +1,9 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import GlassContainer from '../components/GlassContainer';
 import Header from '../components/Header'
+import Profile from '../components/Profile';
+import ProgressCard from '../components/ProgressCard';
 import TextView, { textType } from '../components/TextView';
 
 const Colors = {
@@ -14,7 +17,9 @@ const Colors = {
 export default function Calories() {
     return (
         <View style={styles.container}>
+            <Profile/>
             <Header title={"Calories"} value={"24.0 kc"} color={Colors.Calories}/>
+            <ProgressCard/>
         </View>
     )
 }
