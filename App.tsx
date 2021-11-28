@@ -55,7 +55,7 @@ export default function App() {
     NavigationBar.setVisibilityAsync("visible");
     NavigationBar.setBehaviorAsync("overlay-swipe");
     NavigationBar.setBackgroundColorAsync("#0000001A"); // `rgba(255,255,255,0.3)`
-    // setStatusBarHidden(false, "none");
+    setStatusBarHidden(false, "none");
     setStatusBarBackgroundColor("#0000001A", true);
   }, []);
 

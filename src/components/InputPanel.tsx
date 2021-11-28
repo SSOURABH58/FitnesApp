@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   TextInput,
   View,
@@ -12,6 +13,7 @@ import Animated, {
   useSharedValue,
   withDelay,
   withSpring,
+  withTiming,
 } from "react-native-reanimated";
 import { PrimSizes } from "../assets/constents";
 import AddBtn from "./AddBtn";
@@ -22,13 +24,9 @@ const InputPanel = () => {
   const [IsToggled, setIsToggled] = useState(false);
   const [ToggleKeyboard, setToggleKeyboard] = useState(false);
   const changeDamnationAn = useSharedValue(0);
+  const InputBoxAn = useSharedValue(0);
 
   const InputBarAnStyle = useAnimatedStyle(() => ({
-    // width: interpolate(
-    //   changeDamnationAn.value,
-    //   [0, 1],
-    //   [PrimSizes.AddBtnSize, PrimSizes.KeyboardBtnSize]
-    // ),
     height: interpolate(
       changeDamnationAn.value,
       [0, 1],
@@ -36,10 +34,28 @@ const InputPanel = () => {
     ),
     marginRight: interpolate(changeDamnationAn.value, [0, 1], [20, 0]),
   }));
+  const InputBoxAnStyle = useAnimatedStyle(() => ({
+    width: interpolate(
+      InputBoxAn.value,
+      [0, 1],
+      [0, PrimSizes.screenWidth - PrimSizes.KeyboardBtnSize - 30]
+    ),
+    marginRight: interpolate(InputBoxAn.value, [0, 1], [0, 5]),
+    opacity: InputBoxAn.value,
+  }));
 
   const handlePress = () => {
-    setIsToggled(!IsToggled);
+    if (!IsToggled) setIsToggled(true);
+    else setToggleKeyboard(false);
   };
+
+  useEffect(() => {
+    if (ToggleKeyboard) InputBoxAn.value = withTiming(1, { duration: 800 });
+    else if (IsToggled)
+      InputBoxAn.value = withSpring(0, undefined, (isFinished: boolean) => {
+        if (isFinished) runOnJS(setIsToggled)(false);
+      });
+  }, [ToggleKeyboard]);
 
   useEffect(() => {
     if (IsToggled)
@@ -53,27 +69,22 @@ const InputPanel = () => {
   }, [IsToggled]);
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      <View style={styles.Main}></View>
+    <KeyboardAvoidingView
+      style={styles.container}
+      // style={{ flex: 1 }}
+      behavior={"position"}
+    >
       <Animated.View style={[styles.InputBar, InputBarAnStyle]}>
         {ToggleKeyboard && (
-          <Animated.View
-            style={{
-              width: PrimSizes.screenWidth - PrimSizes.KeyboardBtnSize - 30,
-              marginRight: 5,
-            }}
-          >
-            <GlassContainer>
-              <TextInput />
-            </GlassContainer>
-          </Animated.View>
+          <GlassContainer animatedMainStyle={[InputBoxAnStyle]}>
+            <TextInput />
+          </GlassContainer>
         )}
         <AddBtn
           color={"#CF5414"}
           style={{}}
           onPress={handlePress}
           IsToggled={IsToggled}
-          // popTextInput={popTextInput}
         />
       </Animated.View>
     </KeyboardAvoidingView>
@@ -85,11 +96,16 @@ export default InputPanel;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    justifyContent: "flex-start",
+    // height: PrimSizes.windowHeight,
+    justifyContent: "flex-end",
     alignItems: "center",
+    position: "absolute",
+    bottom: 50,
+    // backgroundColor: "#fff",
+    paddingBottom: 10,
   },
   Main: {
-    flex: 1,
+    // flex: 1,
     width: "100%",
     paddingHorizontal: 30,
     justifyContent: "center",

@@ -9,7 +9,7 @@ import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import AddBtn from "../components/AddBtn";
 import InputPanel from "../components/InputPanel";
-import Animated, { SlideOutLeft } from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 
 export const Colors = {
   Default: "#fff",
@@ -75,10 +75,7 @@ export default function Calories() {
       <View style={styles.Main}>
         <Profile />
         <Header title={"Calories"} value={"24.0 kc"} color={Colors.Calories} />
-        <Animated.View style={styles.BottomCards} exiting>
-          <ProgressCard {...progressCardProps} />
-          <ProgressCard {...progressCardProps} />
-        </Animated.View>
+        <ProgressCard {...progressCardProps} />
       </View>
       <InputPanel />
     </View>
@@ -98,7 +95,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 30,
     paddingTop: 35,
-    flex: 1,
+    flexGrow: 1,
   },
   BottomCards: {
     alignSelf: "flex-start",

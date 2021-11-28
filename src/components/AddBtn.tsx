@@ -66,12 +66,12 @@ const AddBtn: React.FC<AddBtnProps> = ({
       [PrimeColors.glassBorder, color, PrimeColors.glassBorder]
     ),
   }));
-  const iconAnStyles = (isColored: boolean) =>
-    useAnimatedStyle(() => ({
-      opacity: isColored
-        ? interpolate(transformAn.value, [0, 1], [1, 0])
-        : transformAn.value,
-    }));
+  const iconAnStylesOpz = useAnimatedStyle(() => ({
+    opacity: interpolate(transformAn.value, [0, 1], [1, 0]),
+  }));
+  const iconAnStyles = useAnimatedStyle(() => ({
+    opacity: transformAn.value,
+  }));
 
   useEffect(() => {
     if (IsToggled) transformAn.value = withSpring(1);
@@ -92,13 +92,13 @@ const AddBtn: React.FC<AddBtnProps> = ({
           name="ios-add"
           size={43}
           color={color}
-          style={[styles.Icon, iconAnStyles(true)]}
+          style={[styles.Icon, iconAnStylesOpz]}
         />
         <ReanimatedIonicons
           name="ios-add"
           size={35}
           color={PrimeColors.defaultIcon}
-          style={[styles.Icon, iconAnStyles(false), { top: 1, left: 4.5 }]}
+          style={[styles.Icon, iconAnStyles, { top: 1, left: 4.5 }]}
         />
       </View>
     </GlassContainer>
