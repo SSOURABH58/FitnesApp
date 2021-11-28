@@ -1,6 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, StatusBar } from "react-native";
 import Home from "./src/screens/Home";
 import {
   useFonts,
@@ -23,6 +22,11 @@ import {
   Poppins_900Black,
   Poppins_900Black_Italic,
 } from "@expo-google-fonts/poppins";
+import * as NavigationBar from "expo-navigation-bar";
+import {
+  setStatusBarBackgroundColor,
+  setStatusBarHidden,
+} from "expo-status-bar";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -45,6 +49,16 @@ export default function App() {
     Poppins_900Black,
     Poppins_900Black_Italic,
   });
+
+  useEffect(() => {
+    NavigationBar.setPositionAsync("absolute");
+    NavigationBar.setVisibilityAsync("visible");
+    NavigationBar.setBehaviorAsync("overlay-swipe");
+    NavigationBar.setBackgroundColorAsync("#0000001A"); // `rgba(255,255,255,0.3)`
+    // setStatusBarHidden(false, "none");
+    setStatusBarBackgroundColor("#0000001A", true);
+  }, []);
+
   if (!fontsLoaded) {
     return <Text>Loading..</Text>;
   } else {
@@ -59,7 +73,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    // backgroundColor: "#000",
     alignItems: "center",
     justifyContent: "center",
   },

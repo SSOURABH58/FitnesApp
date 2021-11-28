@@ -16,6 +16,7 @@ import Animated, {
   useSharedValue,
   withSpring,
   withTiming,
+  withDelay,
 } from "react-native-reanimated";
 
 const ReanimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -25,6 +26,13 @@ type GlassContainerProps = {
   borderRadius?: number;
   styleMain?: ViewStyle;
   pressColor?: string;
+  animatedStyle?: Animated.AnimateStyle<ViewStyle>[];
+  animatedMainStyle?: Animated.AnimateStyle<ViewStyle>[];
+  onPress?: () => void;
+  onPressIn?: () => void;
+  onPressOut?: () => void;
+  height?: number;
+  width?: number;
 };
 
 const GlassContainer: React.FC<GlassContainerProps> = ({
@@ -33,6 +41,13 @@ const GlassContainer: React.FC<GlassContainerProps> = ({
   borderRadius,
   styleMain,
   pressColor = "#ffffff1A",
+  animatedMainStyle,
+  animatedStyle,
+  onPress,
+  onPressIn,
+  onPressOut,
+  height,
+  width,
 }) => {
   const pressScale = 1.1;
   const pressAnimations = useSharedValue(1);
@@ -61,21 +76,14 @@ const GlassContainer: React.FC<GlassContainerProps> = ({
         styles.GlassContainer,
         styleMain,
         borderRadius ? { borderRadius } : {},
-        // { transform: [{ scale: pressAnimations.value }] },
-        animatedPressStyle,
+        height ? { height } : {},
+        width ? { width } : {},
+        ...(animatedMainStyle ? animatedMainStyle : []),
       ]}
-      onPressIn={() => {
-        pressAnimations.value = withTiming(pressScale, {
-          duration: 100,
-          easing: Easing.ease,
-        });
-      }}
-      onPressOut={() => {
-        pressAnimations.value = withTiming(1, {
-          duration: 180,
-          easing: Easing.ease,
-        });
-      }}
+      onPress={onPress}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      // entering
     >
       <BlurView style={styles.absolute} blurType="light" blurAmount={18} />
       <Animated.View
@@ -83,7 +91,10 @@ const GlassContainer: React.FC<GlassContainerProps> = ({
           styles.GlassBorder,
           style,
           borderRadius ? { borderRadius: borderRadius } : {},
-          animatedColorStyle,
+          height ? { height } : {},
+          width ? { width } : {},
+          // ...(animatedMainStyle ? animatedMainStyle : []),
+          ...(animatedStyle ? animatedStyle : []),
         ]}
       >
         {children}
@@ -106,6 +117,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     // width: "100%",
     // height: "100%",
+    // flex: 1,
     padding: 8,
     paddingTop: 5,
   },

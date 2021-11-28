@@ -13,9 +13,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.sourabh58.fitnessapp"
@@ -23,12 +21,32 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#FFFFFF33"
       },
-      "package": "com.sourabh58.fitnessapp"
+      "package": "com.sourabh58.fitnessapp",
+      "androidNavigationBar": {
+        "visible": "immersive"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "androidNavigationBar": {
+      "visible": "immersive"
+    },
+    "androidStatusBar": {
+      "hidden": "true"
+    },
+    "plugins": [
+      [
+        "expo-navigation-bar",
+        {
+          "position": "absolute",
+          "visibility": "hidden",
+          "behavior": "overlay-swipe",
+          "backgroundColor": "#00000080"
+        }
+      ]
+    ]
   }
 }

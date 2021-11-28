@@ -14,7 +14,7 @@ const screenHight = Dimensions.get("screen").height;
 
 export default function Home() {
   return (
-    <ScrollView style={[styles.fullScreen]}>
+    <ScrollView style={[styles.fullScreen]} snapToInterval={200}>
       <ImageBackground
         source={require("./../assets/workOutBg.jpeg")}
         resizeMethod={"scale"}
@@ -22,6 +22,7 @@ export default function Home() {
       >
         <View style={[styles.fullScreen, { backgroundColor: "#000000CC" }]}>
           <Calories />
+          {/* <Calories /> */}
         </View>
       </ImageBackground>
     </ScrollView>
