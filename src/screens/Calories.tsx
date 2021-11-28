@@ -8,8 +8,10 @@ import TextView, { textType } from "../components/TextView";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import AddBtn from "../components/AddBtn";
+import InputPanel from "../components/InputPanel";
+import Animated, { SlideOutLeft } from "react-native-reanimated";
 
-const Colors = {
+export const Colors = {
   Default: "#fff",
   Calories: "#CF5414",
   Fats: "#FF872A",
@@ -70,13 +72,15 @@ export default function Calories() {
   };
   return (
     <View style={styles.container}>
-      <Profile />
-      <Header title={"Calories"} value={"24.0 kc"} color={Colors.Calories} />
-      <View style={styles.BottomCards}>
-        <ProgressCard {...progressCardProps} />
-        <ProgressCard {...progressCardProps} />
+      <View style={styles.Main}>
+        <Profile />
+        <Header title={"Calories"} value={"24.0 kc"} color={Colors.Calories} />
+        <Animated.View style={styles.BottomCards} exiting>
+          <ProgressCard {...progressCardProps} />
+          <ProgressCard {...progressCardProps} />
+        </Animated.View>
       </View>
-      <AddBtn color={Colors.Calories} />
+      <InputPanel />
     </View>
   );
 }
@@ -86,8 +90,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
+    paddingBottom: 60,
+  },
+  Main: {
+    width: "100%",
+    justifyContent: "flex-start",
+    alignItems: "center",
     paddingHorizontal: 30,
-    paddingVertical: 25,
+    paddingTop: 35,
+    flex: 1,
   },
   BottomCards: {
     alignSelf: "flex-start",
